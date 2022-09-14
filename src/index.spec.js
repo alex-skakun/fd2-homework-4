@@ -58,10 +58,10 @@ describe('fd2-homework-4', () => {
     });
 
     it('should transform elements', async () => {
-      const callback = (el, index) => new Promise(resolve => setTimeout(() => resolve({
+      const callback = (el, index) => {console.log(el, index); return new Promise(resolve => setTimeout(() => resolve({
         value: String(el),
         index,
-      }), index * 100));
+      }), index * 100))};
       const array = new AsyncArray(1, 2, 3);
 
       const result = await array.serialMap(callback);
