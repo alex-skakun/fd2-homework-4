@@ -3,21 +3,21 @@ export class AsyncArray extends Array {
     super(...el);
   }
 
-  serialMap(fn) {
+  async serialMap(fn, ctx) {
     let newArr = new Array(this.length);
-    return new Promise((resolve) => {
-      for (let i = 0; i < this.length; i++) {
-        newArr[i] = fn(this[i], [i], this);
-      }
-    });
+
+    for (let i = 0; i < this.length; i++) {
+      newArr[i] = await fn.call(ctx, this[i], [i], this);
+    }
+    return newArr;
   }
 
-  parallelMap(fn) {
+  async parallelMap(fn, ctx) {
     let newArr = new Array(this.length);
-    return new Promise((resolve) => {
-      for (let i = 0; i < this.length; i++) {
-        newArr[i] = fn(this[i], [i], this);
-      }
-    });
+
+    for (let i = 0; i < this.length; i++) {
+      newArr[i] = fn.call(this[i], [i], this);
+    }
+    return await Promise.all(newArr);
   }
 }
